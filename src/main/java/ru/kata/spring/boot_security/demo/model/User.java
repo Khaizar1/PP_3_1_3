@@ -1,14 +1,13 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -19,7 +18,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -27,17 +28,17 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "userName")
-    private String username;
-
     @Column(name = "firstname")
     private String firstName;
 
     @Column(name = "lastname")
     private String lastName;
 
+    @Column(name = "age")
+    private int age;
+
     @Column(name = "email")
-    private String email;
+    private String username;
 
     @Column(name = "password")
     private String password;
@@ -47,9 +48,9 @@ public class User implements UserDetails {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
-
     )
     @Fetch(FetchMode.JOIN)
+    @ToString.Exclude
     private Set<Role> roleSet = new HashSet<>();
 
     public User() {
@@ -58,17 +59,17 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
     }
-    @Transactional
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleSet.stream()
+        return getRoleSet().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
     @Override
     public boolean isAccountNonExpired() {
@@ -87,7 +88,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void addRole(Role role) {
+    public void setRole(Role role) {
         roleSet.add(role);
     }
 
@@ -110,7 +111,7 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
+                ", email='" + username + '\'' +
                 ", roleList=" + roleSet +
                 '}';
     }
