@@ -53,6 +53,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findByUsername(email);
     }
 
+    @Transactional
+    @Override
+    public void updateUser(User user) {
+        if (!user.getPassword().equals(userRepository.getById(user.getId()).getPassword())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
+        userRepository.save(user);
+    }
+
     public User findByEmail(String email) {
         return userRepository.findByUsername(email);
     }

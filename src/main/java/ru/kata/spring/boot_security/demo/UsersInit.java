@@ -27,9 +27,9 @@ public class UsersInit {
         roleService.save(user);
         roleService.save(admin);
 
-        User user1 = new User("ron", "111");//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
-        User user2 = new User("fred","111");//111//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
-        User user3 = new User("messi", "111");//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
+        User user1 = new User("ron@mail.ru", "111");//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
+        User user2 = new User("fred@mail.ru","111");//111//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
+        User user3 = new User("messi@mail.ru", "111");//$2a$12$54rDWKSismZ9uGff8bWwvetMn/YqhjzHl0P3D7JxY8GSyXeI2zM9e
 
         user1.setRole(roleService.findByName("ROLE_ADMIN"));
         user1.setRole(roleService.findByName("ROLE_USER"));
